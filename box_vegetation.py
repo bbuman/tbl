@@ -62,7 +62,7 @@ class Vegetation:
         self.bryo_meadow = bryo_meadow
         self.bryo_wetland = bryo_wetland
         # Wood AGB
-        self.wood_betual = wood_betula
+        self.wood_betula = wood_betula
         self.wood_grass = wood_grass
         self.wood_meadow = wood_meadow
         self.wood_wetland = wood_wetland
@@ -88,7 +88,7 @@ class Vegetation:
         self.determine_total_biomass()
 
     def determine_agb(self):
-        self.agb_betula = self.green_betula + self.bryo_betula + self.wood_betual
+        self.agb_betula = self.green_betula + self.bryo_betula + self.wood_betula
         self.agb_grass = self.green_grass + self.bryo_grass + self.wood_grass
         self.agb_meadow = self.green_meadow + self.bryo_meadow + self.wood_meadow
         self.agb_wetland = self.green_wetland + self.bryo_wetland + self.wood_wetland
@@ -145,20 +145,37 @@ class Vegetation:
         self.prod_bryo_meadow = prod_bryo_meadow
         self.prod_bryo_wetland = prod_bryo_wetland
         # NPP
-        self.determine_weighted_npp()
         self.determine_total_npp()
         # Export to soil
         self.veg_to_soil = veg_to_soil
         self.determine_total_veg_to_soil()
 
+    def determine_agb_npp(self):
+        self.agb_npp_betula =  self.green_betula + (self.prod_bryo_betula * self.bryo_betula)
+        self.agb_npp_grass = self.green_grass + (self.prod_bryo_grass * self.bryo_grass)
+        self.agb_npp_meadow =  self.green_meadow + (self.prod_bryo_meadow * self.bryo_meadow)
+        self.agb_npp_wetland =  self.green_wetland + (self.prod_bryo_wetland * self.bryo_wetland)
+
+    def determine_bgb_npp(self):
+        self.bgb_npp_betula = self.green_betula * self.prod_vasc_betula
+        self.bgb_npp_grass = self.green_grass * self.prod_vasc_grass
+        self.bgb_npp_meadow = self.green_meadow * self.prod_vasc_meadow
+        self.bgb_npp_wetland = self.green_wetland * self.prod_vasc_wetland
+
+    def determine_npp(self):
+        self.npp_betula = self.agb_npp_betula + self.bgb_npp_betula
+        self.npp_grass = self.agb_npp_grass + self.bgb_npp_grass
+        self.npp_meadow = self.agb_npp_meadow + self.bgb_npp_meadow
+        self.npp_wetland = self.agb_npp_wetland + self.bgb_npp_wetland
+
     def determine_weighted_npp(self):
-        self.npp_betula = (self.prod_bryo_betula * self.bryo_betula) + (self.prod_vasc_betula * self.green_betula)
-        self.npp_grass = (self.prod_bryo_grass * self.bryo_grass) + (self.prod_vasc_grass * self.green_grass)
-        self.npp_meadow = (self.prod_bryo_meadow * self.bryo_meadow) + (self.prod_vasc_meadow * self.green_meadow)
-        self.npp_wetland = (self.prod_bryo_wetland * self.bryo_wetland) + (self.prod_vasc_wetland * self.green_wetland)
         self.area_weighted_npp = ((self.area_betula/100)*self.npp_betula)+((self.area_grass/100)*self.npp_grass)+((self.area_meadow/100)*self.npp_meadow)+((self.area_wetland/100)*self.npp_wetland)
 
     def determine_total_npp(self):
+        self.determine_agb_npp()
+        self.determine_bgb_npp()
+        self.determine_npp()
+        self.determine_weighted_npp()
         self.total_npp = self.area_weighted_npp * self.area
 
     def determine_total_veg_to_soil(self):
