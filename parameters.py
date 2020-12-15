@@ -35,13 +35,13 @@ def define_state_parameters(self):
     root_shoot_wetland = 6
     # <2.4> Green AGB [kg C / m2]:
     green_betula = 0.072
-    green_grass = 0.028
+    green_grass = 0.051
     green_meadow = 0.044
     green_wetland = 0.018
     # <2.5> Bryophyte AGB [kg C / m2]:
-    bryo_betula = 0.0715 # old = 0.157
+    bryo_betula = 0.0833  # old = 0.157; old2 = 0.0715
     bryo_grass = 0
-    bryo_meadow = 0.019
+    bryo_meadow = 0.0134
     bryo_wetland = 0.091
     # <2.6> Litter AGB [kg C / m2]:
     agb_litter_betula = 0.931
